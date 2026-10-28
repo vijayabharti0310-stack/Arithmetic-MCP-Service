@@ -1,0 +1,118 @@
+{
+  "name": "Arithmetic-MCP-Service",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -288,
+        -96
+      ],
+      "id": "c1eef573-7bb6-44e6-a15b-6bf2925c8231",
+      "name": "When chat message received",
+      "webhookId": "0fa129e8-9d39-4edd-8e37-d09ebcce586c"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "\"You are a precise math assistant. Whenever the user writes arithmetic expressions using words ('plus', 'minus') or symbols ('+', '-'), you must immediately extract the numbers and call the corresponding add_numbers or subtract_numbers tool. Never try to calculate math in your head if a tool is available.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -112,
+        -96
+      ],
+      "id": "4b48a806-3f75-4f0c-9d69-bf22924f05c2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        112
+      ],
+      "id": "efec07a8-0594-465b-826d-e412cf5c84b2",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "dLadnNIi9yvlMKCI",
+          "name": "Ollama account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "http://127.0.0.1:8000/sse",
+        "serverTransport": "sse",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.4,
+      "position": [
+        64,
+        112
+      ],
+      "id": "716f79a4-fe87-4333-8662-2efabeae9e32",
+      "name": "MCP Client"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "2a9f7252-b01f-40e0-bf5e-2d0ea7a804b5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8b4d953c228ca176685aa2d1512dca3d282e3b7f5330ff8d96e0b39299cc3081"
+  },
+  "nodeGroups": [],
+  "id": "DvqDdh1eg33cV5sd",
+  "tags": []
+}
